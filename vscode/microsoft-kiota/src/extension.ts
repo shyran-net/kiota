@@ -180,6 +180,8 @@ export async function activate(
         clientOrPluginKey = configuration.clientClassName || configuration.pluginName || '';
       }
 
+      const configObject = clientOrPluginObject || configuration;
+
       if (!configuration) {
         setGenerationConfiguration({
           outputPath: clientOrPluginObject.outputPath,
@@ -197,10 +199,10 @@ export async function activate(
       }
       const workspaceGenerationType = getWorkspaceGenerationType();
       if (isClientType(workspaceGenerationType)) {
-        await regenerateClient(clientOrPluginKey, clientOrPluginObject, settings, selectedPaths);
+        await regenerateClient(clientOrPluginKey, configObject, settings, selectedPaths);
       }
       if (isPluginType(workspaceGenerationType)) {
-        await regeneratePlugin(clientOrPluginKey, clientOrPluginObject, settings, selectedPaths);
+        await regeneratePlugin(clientOrPluginKey, configObject, settings, selectedPaths);
       }
     }),
     registerCommandWithTelemetry(reporter, `${extensionId}.regenerate`, async (clientKey: string, clientObject: ClientOrPluginProperties, generationType: string) => {
